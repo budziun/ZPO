@@ -84,6 +84,8 @@ print(ksiazka1.price)
 #ZAD4
 #Stworzyć klasę Product jako dataclass zawierającą name, price, category, a następnie rozszerz
 # ją o walidację ceny (powinna być większa od zera) oraz domyślną wartość category="General".
+from pydantic import BaseModel, Field
+
 
 @dataclass
 class Product:
@@ -93,11 +95,16 @@ class Product:
 
     def __post_init__(self):
         if self.price <= 0:
-            raise ValueError(f"Cena musi być większa od zera {self.price}")
+            raise ValueError(f"Cena musi być większa od zera a jest {self.price}")
 
+try:
+    produkt1 = Product(name="produkt1", price=-1000.00)
+except ValueError as e:
+    print(e)
 
-produkt2 = Product(name="produkt2", price=100.00)
+produkt2 = Product(name="produkt2", price=1000.00)
 print(produkt2.price)
+print(produkt2.category)
 
 #ZAD5
 # Utworzyć klasę Car z atrybutami brand, model i year. Następnie dodać metodę is_classic(),

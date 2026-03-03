@@ -66,50 +66,8 @@ print(pizza1.ingredients)
 # Rozszerzyć istniejącą implementację budowniczego tak, aby umożliwić budowanie
 # różnych wariantów obiektów (np. dla pizzy vege, mięsnej, serowej, itd.).
 
+class Pizzerman(Pizza):
 
-class BuilderPizza2():
-    ingredients = []
-
-    @abstractmethod
-    def dodaj_ser(self) -> None:
-        pass
-    @abstractmethod
-    def dodaj_pieczarki(self) -> None:
-        pass
-    @abstractmethod
-    def dodaj_cebula(self) -> None:
-        pass
-    @abstractmethod
-    def dodaj_salami(self) -> None:
-        pass
-    @abstractmethod
-    def dodaj_rukola(self) -> None:
-        pass
-    @abstractmethod
-    def pizza_vege(self) -> None:
-        pass
-    @abstractmethod
-    def pizza_miesna(self) -> None:
-        pass
-    @abstractmethod
-    def pizza_serowa(self) -> None:
-        pass
-
-class Pizza2(BuilderPizza2):
-    ingredients = []
-
-    def __init__(self,ingredients):
-        self.ingredients = ingredients
-    def dodaj_ser(self) -> None:
-        self.ingredients.append("Ser")
-    def dodaj_pieczarki(self) -> None:
-        self.ingredients.append("Pieczarki")
-    def dodaj_cebula(self) -> None:
-        self.ingredients.append("Cebula")
-    def dodaj_salami(self) -> None:
-        self.ingredients.append("Salami")
-    def dodaj_rukola(self) -> None:
-        self.ingredients.append("Rukola")
     def pizza_vege(self) -> None:
         self.dodaj_ser()
         self.dodaj_rukola()
@@ -123,13 +81,13 @@ class Pizza2(BuilderPizza2):
         self.dodaj_ser()
 
 print("\nCZĘŚĆ B")
-pizza_2 = Pizza2([])
+pizza_2 = Pizzerman([])
 pizza_2.pizza_vege()
 print("Pizza vege",pizza_2.ingredients)
-pizza_3 = Pizza2([])
+pizza_3 = Pizzerman([])
 pizza_3.pizza_miesna()
 print("Pizza miesna",pizza_3.ingredients)
-pizza_4 = Pizza2([])
+pizza_4 = Pizzerman([])
 pizza_4.pizza_serowa()
 print("Pizza serowa",pizza_4.ingredients)
 
@@ -138,8 +96,6 @@ print("\nCZĘŚĆ C")
 # Przerobić nastęopnie kod tak, aby zamiast dużego konstruktora użyć wzorca budowniczego
 
 class ComputerBuilder(ABC):
-    parts = []
-
     @abstractmethod
     def dodaj_cpu(self) -> None:
         pass
@@ -234,4 +190,3 @@ pdf = factory.create_document(".pdf")
 
 print(word.get_type())
 print(pdf.get_type())
-

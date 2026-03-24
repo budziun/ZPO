@@ -42,7 +42,7 @@ print(old.print_old())
 print(old.old)
 print(old.age)
 
-staro_nowe = OldNewAdapter(new)
+staro_nowe = OldNewAdapter(old)
 print(staro_nowe.print_new())
 print(staro_nowe.print_old())
 
@@ -92,16 +92,38 @@ class Blik:
     def pay_blik(self, kwota: float):
         return f"Zapłacono blikiem {kwota} PLN"
 
+class PayPalAdapter:
+    def __init__(self, service: PayPal):
+        self.service = service
+    def pay(self, kwota: float):
+        return self.service.pay_paypal(kwota)
+
+class StripeAdapter:
+    def __init__(self, service: Stripe):
+        self.service = service
+    def pay(self, kwota: float):
+        return self.service.pay_stripe(kwota)
+
+class BlikAdapter:
+    def __init__(self, service: Blik):
+        self.service = service
+    def pay(self, kwota: float):
+        return self.service.pay_blik(kwota)
+
 class Payment:
+    def __init__(self):
+        self._adapters = {
+            "PayPal": PayPalAdapter(PayPal()),
+            "Stripe": StripeAdapter(Stripe()),
+            "Blik": BlikAdapter(Blik())
+        }
+
     def pay(self, kwota: float, rodzaj: str):
-        if(rodzaj == "PayPal"):
-            return PayPal().pay_paypal(kwota)
-        elif(rodzaj == "Stripe"):
-            return Stripe().pay_stripe(kwota)
-        elif(rodzaj == "Blik"):
-            return Blik().pay_blik(kwota)
+        adapter = self._adapters.get(rodzaj)
+        if adapter:
+            return adapter.pay(kwota)
         else:
-            return f"Przepraszamy, nie obsługujemy płatności za pomocą {rodzaj}, opłać inną metodą płatności kwotę {kwota} PLN"
+            return f"Nie obsługujemy płatności: {rodzaj}, zapłać {kwota} PLN"
 
 print("\nCZĘŚĆ C")
 tranzakcja = Payment()
